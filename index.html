@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Management System</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/auth.css">
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading" class="loading-screen">
+        <div class="loading-spinner"></div>
+        <p>Loading Event Management System...</p>
+    </div>
+
+    <!-- Authentication Section -->
+    <div id="auth-section" class="auth-section">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h1><i class="fas fa-calendar-alt"></i> Event Management System</h1>
+                <p>Manage events, bookings, and analytics in one place</p>
+            </div>
+
+            <!-- Login Form -->
+            <div id="login-form" class="auth-form active">
+                <h2>Login</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginRole">Role</label>
+                        <select id="loginRole" required>
+                            <option value="">Select Role</option>
+                            <option value="organizer">Organizer</option>
+                            <option value="participant">Participant</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+                <p class="auth-switch">Don't have an account? <a href="#" id="showSignup">Sign up</a></p>
+            </div>
+
+            <!-- Signup Form -->
+            <div id="signup-form" class="auth-form">
+                <h2>Sign Up</h2>
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="signupName">Full Name</label>
+                        <input type="text" id="signupName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email</label>
+                        <input type="email" id="signupEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupRole">Role</label>
+                        <select id="signupRole" required>
+                            <option value="">Select Role</option>
+                            <option value="organizer">Organizer</option>
+                            <option value="participant">Participant</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                </form>
+                <p class="auth-switch">Already have an account? <a href="#" id="showLogin">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Section -->
+    <div id="dashboard-section" class="dashboard-section hidden">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <i class="fas fa-calendar-alt"></i>
+                <span>EMS Dashboard</span>
+            </div>
+            <div class="nav-user">
+                <span id="userWelcome">Welcome, User</span>
+                <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+            </div>
+        </nav>
+
+        <!-- Main Dashboard -->
+        <div class="dashboard-container">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <ul class="sidebar-menu">
+                    <li><a href="#" data-section="overview" class="active"><i class="fas fa-home"></i> Overview</a></li>
+                    <li><a href="#" data-section="events"><i class="fas fa-calendar"></i> Events</a></li>
+                    <li><a href="#" data-section="bookings"><i class="fas fa-ticket-alt"></i> Bookings</a></li>
+                    <li><a href="#" data-section="analytics"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+                    <li><a href="#" data-section="notifications"><i class="fas fa-bell"></i> Notifications</a></li>
+                    <li><a href="#" data-section="test-cases"><i class="fas fa-vial"></i> Test Cases</a></li>
+                </ul>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Overview Section -->
+                <div id="overview-section" class="content-section active">
+                    <div class="section-header">
+                        <h2>Dashboard Overview</h2>
+                        <p>Welcome to your Event Management System</p>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalEvents">0</h3>
+                                <p>Total Events</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-ticket-alt"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalBookings">0</h3>
+                                <p>Total Bookings</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalParticipants">0</h3>
+                                <p>Participants</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalRevenue">$0</h3>
+                                <p>Total Revenue</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quick-actions">
+                        <h3>Quick Actions</h3>
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" onclick="showSection('events')">
+                                <i class="fas fa-plus"></i> Create Event
+                            </button>
+                            <button class="btn btn-secondary" onclick="showSection('bookings')">
+                                <i class="fas fa-eye"></i> View Bookings
+                            </button>
+                            <button class="btn btn-accent" onclick="showSection('analytics')">
+                                <i class="fas fa-chart-line"></i> View Analytics
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Events Section -->
+                <div id="events-section" class="content-section">
+                    <div class="section-header">
+                        <h2>Event Management</h2>
+                        <button id="createEventBtn" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Create Event
+                        </button>
+                    </div>
+
+                    <div id="eventsList" class="events-list">
+                        <!-- Events will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Bookings Section -->
+                <div id="bookings-section" class="content-section">
+                    <div class="section-header">
+                        <h2>Booking Management</h2>
+                        <div class="filter-controls">
+                            <select id="bookingFilter">
+                                <option value="all">All Bookings</option>
+                                <option value="confirmed">Confirmed</option>
+                                <option value="pending">Pending</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="bookingsList" class="bookings-list">
+                        <!-- Bookings will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Analytics Section -->
+                <div id="analytics-section" class="content-section">
+                    <div class="section-header">
+                        <h2>Analytics & Reports</h2>
+                    </div>
+
+                    <div class="analytics-grid">
+                        <div class="analytics-card">
+                            <h3>Event Performance</h3>
+                            <div id="eventPerformance" class="chart-placeholder">
+                                <p>Event performance data will be displayed here</p>
+                            </div>
+                        </div>
+                        <div class="analytics-card">
+                            <h3>Revenue Trends</h3>
+                            <div id="revenueTrends" class="chart-placeholder">
+                                <p>Revenue trends will be displayed here</p>
+                            </div>
+                        </div>
+                        <div class="analytics-card">
+                            <h3>Popular Events</h3>
+                            <div id="popularEvents" class="popular-events-list">
+                                <!-- Popular events will be listed here -->
+                            </div>
+                        </div>
+                        <div class="analytics-card">
+                            <h3>Feedback Summary</h3>
+                            <div id="feedbackSummary" class="feedback-summary">
+                                <!-- Feedback summary will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications Section -->
+                <div id="notifications-section" class="content-section">
+                    <div class="section-header">
+                        <h2>Notifications</h2>
+                        <button id="sendNotificationBtn" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Send Notification
+                        </button>
+                    </div>
+
+                    <div id="notificationsList" class="notifications-list">
+                        <!-- Notifications will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Test Cases Section -->
+                <div id="test-cases-section" class="content-section">
+                    <div class="section-header">
+                        <h2>Test Case Panel</h2>
+                        <button id="runAllTestsBtn" class="btn btn-primary">
+                            <i class="fas fa-play"></i> Run All Tests
+                        </button>
+                    </div>
+
+                    <div class="test-results">
+                        <div id="testResults" class="test-results-container">
+                            <!-- Test results will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Event Modal -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="eventModalTitle">Create Event</h3>
+                <span class="close" onclick="closeModal('eventModal')">&times;</span>
+            </div>
+            <form id="eventForm">
+                <div class="form-group">
+                    <label for="eventTitle">Event Title</label>
+                    <input type="text" id="eventTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="eventDescription">Description</label>
+                    <textarea id="eventDescription" rows="3" required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventDate">Date</label>
+                        <input type="date" id="eventDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventTime">Time</label>
+                        <input type="time" id="eventTime" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventLocation">Location</label>
+                        <input type="text" id="eventLocation" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventCapacity">Capacity</label>
+                        <input type="number" id="eventCapacity" min="1" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="eventPrice">Ticket Price ($)</label>
+                    <input type="number" id="eventPrice" min="0" step="0.01" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('eventModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Event</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Book Event</h3>
+                <span class="close" onclick="closeModal('bookingModal')">&times;</span>
+            </div>
+            <form id="bookingForm">
+                <div id="bookingEventDetails" class="event-details">
+                    <!-- Event details will be populated here -->
+                </div>
+                <div class="form-group">
+                    <label for="bookingQuantity">Number of Tickets</label>
+                    <input type="number" id="bookingQuantity" min="1" value="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookingNotes">Special Notes (Optional)</label>
+                    <textarea id="bookingNotes" rows="2"></textarea>
+                </div>
+                <div class="booking-summary">
+                    <div class="summary-row">
+                        <span>Ticket Price:</span>
+                        <span id="ticketPrice">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Quantity:</span>
+                        <span id="ticketQuantity">1</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span id="totalPrice">$0.00</span>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('bookingModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Confirm Booking</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Modal -->
+    <div id="notificationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Send Notification</h3>
+                <span class="close" onclick="closeModal('notificationModal')">&times;</span>
+            </div>
+            <form id="notificationForm">
+                <div class="form-group">
+                    <label for="notificationType">Type</label>
+                    <select id="notificationType" required>
+                        <option value="">Select Type</option>
+                        <option value="email">Email</option>
+                        <option value="sms">SMS</option>
+                        <option value="both">Both</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="notificationRecipients">Recipients</label>
+                    <select id="notificationRecipients" required>
+                        <option value="">Select Recipients</option>
+                        <option value="all">All Users</option>
+                        <option value="organizers">Organizers Only</option>
+                        <option value="participants">Participants Only</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="notificationSubject">Subject</label>
+                    <input type="text" id="notificationSubject" required>
+                </div>
+                <div class="form-group">
+                    <label for="notificationMessage">Message</label>
+                    <textarea id="notificationMessage" rows="4" required></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('notificationModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Send Notification</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/events.js"></script>
+    <script src="js/bookings.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/analytics.js"></script>
+    <script src="js/testCases.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
